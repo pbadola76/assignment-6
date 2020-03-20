@@ -33,12 +33,12 @@ public class LinkedList<T> implements List<T>
         {
          
             Node node = new Node(item);
-            Node prev = head; 
-            while(prev.next != null) 
+            Node old = head; 
+            while(old.next != null) 
             { 
-                prev = prev.next; 
+                old = old.next; 
             }
-            prev.next = node;
+            old.next = node;
             size++;
         }
     }
@@ -53,14 +53,14 @@ public class LinkedList<T> implements List<T>
         }
         else 
         {
-            Node prev = head;
+            Node old = head;
             for(int i = 0; i < pos ; i++) 
             {
-                prev = prev.next;
+                old = old.next;
             }
             Node node = new Node(item);
-            node.next = prev.next;
-            prev.next = node;
+            node.next = old.next;
+            old.next = node;
             size++;
         }
     }
@@ -78,11 +78,11 @@ public class LinkedList<T> implements List<T>
             size--;
             return node.data;
         }
-        Node prev = head;
+        Node old = head;
         for(int i = 0; i < pos; i++) 
-            prev = prev.next;
-        Node node = prev.next;
-        prev.next = node.next;
+            old = old.next;
+        Node node = old.next;
+        old.next = node.next;
         size--;
         return node.data;
     }
