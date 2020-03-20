@@ -14,7 +14,6 @@ public class LinkedList<T> implements List<T>
         T data;
         Node next;
 
-        /* Node Constructor */
         Node(T newData)
         {
             data = newData;
