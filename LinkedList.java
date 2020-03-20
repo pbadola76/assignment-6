@@ -1,159 +1,118 @@
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
-public class LinkedList<T> implements List<T>
+public class LinkedList<T> implements List<T> 
 {
+    Node head;
+    int size;
 
-    private int size;
-    private T[] linked;
-    private Node head;
-
-    
-    public class Node 
+    private class Node
     {
         T data;
         Node next;
-
-        Node(T newData)
+        public Node(T item) 
         {
-            data = newData;
-            next = null;
+            this.data = item;
+            this.next = null;
         }
     }
 
-    class LinkedListIterator implements Iterator<T>
+    public LinkedList() 
     {
-        
-        Node index;
-
-        public LinkedListIterator()
-        {
-            index = head;
-        }
-
-       
-        public boolean hasNext()
-        {
-           
-            if(index != null)
-            {
-                return true;
-            } 
-            else
-            {
-                return false;
-            }
-        }
-
-       
-        public T next()
-        {
-           
-            if(!hasNext())
-            {
-                throw new NoSuchElementException();
-            }
-           
-            T value = index.data;
-            index = index.next;
-            return value;
-        }
+        this.head = new Node(null);
+        this.size = 0;
     }
 
-    public void add(T item)
+    public void add(T item) 
     {
-
-        Node current = new Node(item);
-        if(size == 0)
+        if(head.data == null) 
         {
-            head = current;
-            current.next = null;
+            head = new Node(item);
+            size++;
         }
         else 
         {
-            LinkedListIterator list = new LinkedListIterator();
-            for(int i = 0; i < size; i++)
-            {
-                list.next();
+         
+            Node node = new Node(item);
+            Node prev = head; 
+            while(prev.next != null) 
+            { 
+                prev = prev.next; 
             }
-            
-            list.index.next = current;
-            current.next = null;
+            prev.next = node;
+            size++;
         }
-        ++size;
-
     }
 
-    public void add(int pos, T item)
+    public void add(int pos, T item) 
     {
-        if(pos == 0)
-        {
-            Node current = new Node(item);
-            current.next = head;
-            head = current;
-        } 
+        if(pos == 0) {
+            Node node = new Node(item);
+            node.next = head;
+            head = node;
+            size++;
+        }
         else 
         {
             Node prev = head;
-            for(int i = 0; i < pos - 1; i++)
+            for(int i = 0; i < pos ; i++) 
             {
                 prev = prev.next;
             }
-
-            Node current = new Node(item);
-            prev.next = current;
-            current.next = prev.next;
+            Node node = new Node(item);
+            node.next = prev.next;
+            prev.next = node;
+            size++;
         }
-        size++;
     }
 
-    public T get(int pos)
+    public T remove(int pos) 
     {
-        if(pos < 0) 
+        if(pos > size || pos < 0) 
         {
             return null;
         }
-
-        Node node = head;
-        for(int i = 0; i < pos; i++){
-            node = node.next;
-        }
-        return node.data;
-
-    }
-
-    public T remove(int pos)
-    {
-
-        if(pos < 0 || pos+1 > size)
+        if(pos == 0) 
         {
-            return null;
-        }
-        Node current;
- 
-        if(pos == 0)
-        {
-            current = head;
+            Node node = head;
             head = head.next;
-        } 
+            size--;
+            return node.data;
+        }
+        Node prev = head;
+        for(int i = 0; i < pos; i++) 
+            prev = prev.next;
+        Node node = prev.next;
+        prev.next = node.next;
+        size--;
+        return node.data;
+    }
+
+    public T get(int pos) 
+    {
+        Node current = head;
+        int counts = 0;
+
+        if(pos < 0 || pos > size-1) 
+        {
+            return null;
+        }
         else 
         {
-            LinkedListIterator list = new LinkedListIterator();
-            for(int i = 0; i < pos; i++)
+            while(current!=null) 
             {
-                list.next();
+                if(counts == pos) 
+                {
+                    return current.data;
+                }
+                counts++;
+                current = current.next;
             }
-
-            current = list.index;
-            current.next = list.index.next.next;
         }
-        --size;
-        return current.data;
-
+        return null;
     }
-    public int size()
+
+    public int size() 
     {
         return size;
     }
-
 }
